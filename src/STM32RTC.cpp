@@ -117,31 +117,36 @@ void STM32RTC::enableAlarm(Alarm_Match match)
 {
   Hour12_AM_PM_t format;
   uint8_t date, hours, minutes, seconds;
-  uint32_t subSeconds;
+  uint32_t subSeconds, mask;
 
   if(_configured) {
+    if (match == MATCH_OFF) {
+      RTC_StopAlarm();
+      return;
+    }
     RTC_GetTime(&hours, &minutes, &seconds, &subSeconds, (hourAM_PM_t*)&format);
     date = getDay();
-
+    mask = RTC_ALARMMASK_ALL;
     switch (match) {
-      case MATCH_OFF:
-        RTC_StopAlarm();
-        break;
       case MATCH_YYMMDDHHMMSS://kept for compatibility
       case MATCH_MMDDHHMMSS:  //kept for compatibility
       case MATCH_DHHMMSS:
+        mask ^= RTC_ALARMMASK_DATEWEEKDAY;
         date = _alarmDate;
       case MATCH_HHMMSS:
+        mask ^= RTC_ALARMMASK_HOURS;
         hours = _alarmHours;
         format = _alarmFormat;
       case MATCH_MMSS:
+        mask ^= RTC_ALARMMASK_MINUTES;
         minutes = _alarmMinutes;
       case MATCH_SS:
+        mask ^= RTC_ALARMMASK_SECONDS;
         seconds = _alarmSeconds;
-        RTC_StartAlarm(date, hours, minutes, seconds, subSeconds, (hourAM_PM_t)format);
+        RTC_StartAlarm(date, hours, minutes, seconds, subSeconds, (hourAM_PM_t)format, mask);
         break;
       default:
-      break;
+        break;
     }
   }
 }
