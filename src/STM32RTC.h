@@ -87,6 +87,15 @@ public:
     MATCH_YYMMDDHHMMSS = 6
   };
 
+  enum Output_Mode
+  {
+    OUTPUT_DISABLE, OUTPUT_ALARM, OUTPUT_WAKEUP
+  };
+  enum Output_Type
+  {
+    OUTPUT_PUSHPULL, OUTPUT_OPENDRAIN
+  };
+
   STM32RTC();
 
   void begin(bool resetTime, RTCHourFormats_t format = HOUR_24);
@@ -159,6 +168,9 @@ public:
   void setAlarmYear(uint8_t year);
   void setAlarmDate(uint8_t day, uint8_t month, uint8_t year);
 
+  // STM32 Additions
+  void setOutputMode(Output_Mode mode, uint32_t polarity, Output_Type type);
+  
   /* Epoch Functions */
 
   uint32_t getEpoch(void);

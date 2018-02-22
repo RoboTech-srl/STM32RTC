@@ -858,3 +858,23 @@ void STM32RTC::setY2kEpoch(uint32_t ts)
     setEpoch(ts + EPOCH_TIME_OFF);
   }
 }
+
+/**
+  * @brief  set RTC output pin function
+  * @param  mode output function, one of Output_Mode constants
+  * @param  polarity active level, either HIGH or LOW
+  * @param  type push-pull or open-drain type, one of Output_Type constants
+  */
+void STM32RTC::setOutputMode(Output_Mode mode, uint32_t polarity, Output_Type type)
+{
+  if (_configured) {
+    if (mode == OUTPUT_DISABLE)
+      RTC_SetOutput(RTC_OUTPUT_DISABLE, 0, 0);
+    else
+      RTC_SetOutput(
+        mode == OUTPUT_WAKEUP ? RTC_OUTPUT_WAKEUP : RTC_OUTPUT_ALARMA,
+        polarity ? RTC_OUTPUT_POLARITY_HIGH : RTC_OUTPUT_POLARITY_LOW,
+        type == OUTPUT_PUSHPULL ? RTC_OUTPUT_TYPE_PUSHPULL : RTC_OUTPUT_TYPE_OPENDRAIN
+      );
+  }
+}
