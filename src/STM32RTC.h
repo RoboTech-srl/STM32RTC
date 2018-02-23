@@ -169,7 +169,7 @@ public:
   void setAlarmDate(uint8_t day, uint8_t month, uint8_t year);
 
   // STM32 Additions
-  void setOutputMode(Output_Mode mode, uint32_t polarity, Output_Type type);
+  void setOutput(Output_Mode mode, uint32_t polarity, Output_Type type);
   
   /* Epoch Functions */
 

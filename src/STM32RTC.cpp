@@ -864,8 +864,9 @@ void STM32RTC::setY2kEpoch(uint32_t ts)
   * @param  mode output function, one of Output_Mode constants
   * @param  polarity active level, either HIGH or LOW
   * @param  type push-pull or open-drain type, one of Output_Type constants
+  * @note Polarity and type are not supported in F1 Series.
   */
-void STM32RTC::setOutputMode(Output_Mode mode, uint32_t polarity, Output_Type type)
+void STM32RTC::setOutput(Output_Mode mode, uint32_t polarity, Output_Type type)
 {
   if (_configured) {
     if (mode == OUTPUT_DISABLE)

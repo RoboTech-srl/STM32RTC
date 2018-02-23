@@ -63,6 +63,8 @@ detachInterrupt		KEYWORD2
 
 setClockSource		KEYWORD2
 
+setOutput		KEYWORD2
+
 #######################################
 # Constants (LITERAL1)
 #######################################
