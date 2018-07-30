@@ -1,15 +1,16 @@
 /**
   ******************************************************************************
-  * @file    Epoch.ino
+  * @file    RTCClockSelection.ino
   * @author  WI6LABS
   * @version V1.0.0
-  * @date    12-December-2017
-  * @brief   RTC epoch example
+  * @date    15-March-2018
+  * @brief   RTC clock selection: LSI, LSE or HSE. Refer to board datasheet to
+  *          know available clock.
   *
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2018 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -41,28 +42,53 @@
 /* Get the rtc object */
 STM32RTC& rtc = STM32RTC::getInstance();
 
-void setup() {
+/* Change these values to set the current initial time */
+const byte seconds = 0;
+const byte minutes = 0;
+const byte hours = 16;
+
+/* Change these values to set the current initial date */
+/* Monday 15th June 2015 */
+const byte weekDay = 1;
+const byte day = 15;
+const byte month = 6;
+const byte year = 15;
+
+void setup()
+{
   Serial.begin(9600);
+
+  // Select RTC clock source: RTC_LSI_CLOCK, RTC_LSE_CLOCK or RTC_HSE_CLOCK.
+  // By default the LSI is selected as source.
+  rtc.setClockSource(STM32RTC::RTC_LSE_CLOCK);
 
   rtc.begin(); // initialize RTC 24H format
 
-  rtc.setEpoch(1451606400); // Jan 1, 2016
+  // Set the time
+  rtc.setHours(hours);
+  rtc.setMinutes(minutes);
+  rtc.setSeconds(seconds);
+
+  // Set the date
+  rtc.setWeekDay(weekDay);
+  rtc.setDay(day);
+  rtc.setMonth(month);
+  rtc.setYear(year);
+
+  // you can use also
+  //rtc.setTime(hours, minutes, seconds);
+  //rtc.setDate(weekDay, day, month, year);
 }
 
-void loop() {
-  Serial.print("Unix time = ");
-  Serial.println(rtc.getEpoch());
-
-  Serial.print("Seconds since Jan 1 2000 = ");
-  Serial.println(rtc.getY2kEpoch());
-
+void loop()
+{
   // Print date...
-  Serial.print(rtc.getDay());
+  print2digits(rtc.getDay());
   Serial.print("/");
-  Serial.print(rtc.getMonth());
+  print2digits(rtc.getMonth());
   Serial.print("/");
-  Serial.print(rtc.getYear());
-  Serial.print("\t");
+  print2digits(rtc.getYear());
+  Serial.print(" ");
 
   // ...and time
   print2digits(rtc.getHours());
@@ -76,9 +102,11 @@ void loop() {
   delay(1000);
 }
 
+
+
 void print2digits(int number) {
   if (number < 10) {
-    Serial.print("0");
+    Serial.print("0"); // print a 0 before if the number is < than 10
   }
   Serial.print(number);
 }

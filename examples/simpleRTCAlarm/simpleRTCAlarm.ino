@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    Epoch.ino
+  * @file    simpleRTCAlarm.ino
   * @author  WI6LABS
   * @version V1.0.0
   * @date    12-December-2017
@@ -38,8 +38,8 @@
 
 #include <STM32RTC.h>
 
-/* Create an rtc object */
-STM32RTC rtc;
+/* Get the rtc object */
+STM32RTC& rtc = STM32RTC::getInstance();
 
 /* Change these values to set the current initial time */
 const byte seconds = 0;
@@ -73,5 +73,6 @@ void loop()
 
 void alarmMatch(void *data)
 {
+  UNUSED(data);
   Serial.println("Alarm Match!");
 }
