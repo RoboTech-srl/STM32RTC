@@ -163,6 +163,7 @@ public:
   void setDate(uint8_t day, uint8_t month, uint8_t year);
   void setDate(uint8_t weekDay, uint8_t day, uint8_t month, uint8_t year);
 
+  void setAlarmSubSeconds(uint32_t subSeconds);
   void setAlarmSeconds(uint8_t seconds);
   void setAlarmMinutes(uint8_t minutes);
   void setAlarmHours(uint8_t hours);

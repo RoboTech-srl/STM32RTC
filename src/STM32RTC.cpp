@@ -697,6 +697,20 @@ void STM32RTC::setDate(uint8_t weekDay, uint8_t day, uint8_t month, uint8_t year
 }
 
 /**
+  * @brief  set RTC alarm subseconds.
+  * @param  subseconds: 0-999
+  * @retval none
+  */
+void STM32RTC::setAlarmSubSeconds(uint32_t subSeconds)
+{
+ if (_configured) {
+    if(subSeconds < 1000) {
+      _alarmSubSeconds = subSeconds;
+    }
+ }
+}
+
+/**
   * @brief  set RTC alarm second.
   * @param  seconds: 0-59
   * @retval none
@@ -847,8 +861,8 @@ uint32_t STM32RTC::getEpoch(void)
 {
   struct tm tm;
 
-  syncDate();
   syncTime();
+  syncDate();
 
   tm.tm_isdst = -1;
   tm.tm_yday = 0;
